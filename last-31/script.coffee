@@ -17,13 +17,17 @@ $ ->
       day.net = day.consumed + day.burned
       if day.net > day.target
         day.zone = "Over"
+        day.color = "#A61E09"
+        day.symbol = "triangle"
       else
         day.zone = "Under"
+        day.color = "#089934"
+        day.symbol = "triangle-down"
     sourceData.push day
   
-  chart = undefined
+  
   $(document).ready ->
-    chart = new Highcharts.Chart(
+    new Highcharts.Chart(
       chart:
         renderTo: "container"
         zoomType: "xy"
@@ -77,6 +81,11 @@ $ ->
           if day.net?
             y: day.net
             name: day.zone
+            marker:
+              fillColor: day.color
+              radius: 8
+              symbol: day.symbol
+              lineColor: day.color
           else
             null
         tooltip:
@@ -84,7 +93,7 @@ $ ->
       ,
         name: "Target Calories"
         type: "spline"
-        color: "#000000"
+        color: "#731491"
         dashStyle: "Dash"
         lineWidth: 1
         marker: 
