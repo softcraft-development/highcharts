@@ -52,7 +52,7 @@ $ ->
         name: "Calories Consumed"
         type: "column"
         stacking: "normal"
-        color: "#dcf3f9"
+        color: "#9ddbf4"
         data: _.map sourceData, (day) ->
           if day.consumed?
             day.consumed
@@ -62,7 +62,7 @@ $ ->
         name: "Calories Burned"
         type: "column"
         stacking: "normal"
-        color: "#a9e0f4"
+        color: "#1fbae3"
         data: _.map sourceData, (day) ->
           if day.burned?
             day.burned
@@ -72,7 +72,7 @@ $ ->
         name: "Over/Under"
         type: "spline"
         connectNulls: true
-        color: "#743b9a"
+        color: "#731491"
         data: _.map sourceData, (day) ->
           if day.net?
             y: day.net
