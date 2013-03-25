@@ -12,8 +12,8 @@ $ ->
     day.target = (2000 - (index * 10))
     
     if Math.random() > 0.2
-      day.consumed = Math.floor(2000-(10*index)+(89*Math.random()))
-      day.burned = Math.floor(0-(6*index)-(22*Math.random()))
+      day.consumed = Math.floor(2000-(11*index)+(108*Math.random()))
+      day.burned = Math.floor(0-(7*index)-(24*Math.random()))
       day.net = day.consumed + day.burned
       if day.net > day.target
         day.zone = "Over"
@@ -84,7 +84,11 @@ $ ->
       ,
         name: "Target Calories"
         type: "spline"
-        color: "#FF0000"
+        color: "#000000"
+        dashStyle: "Dash"
+        lineWidth: 1
+        marker: 
+          enabled: false
         data: _.map sourceData, (day) ->
           day.target
       ]
