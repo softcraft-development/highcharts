@@ -2,6 +2,7 @@ $ ->
   randomCaloriesConsumed = []
   randomCaloriesBurned = []
   randomCaloriesNet = []
+  targetCalories = []
   xAxisLabels = []
   now = new Date(Date.now())    
   for index in [0..30]
@@ -15,6 +16,7 @@ $ ->
       randomCaloriesConsumed.push null
       randomCaloriesBurned.push null
       randomCaloriesNet.push null
+    targetCalories.push (2000 - (index * 10))
     d = new Date()
     d.setDate(now.getDate() - 31 + index)
     xAxisLabels.push "#{1+d.getMonth()}/#{d.getDate()}"
@@ -43,18 +45,6 @@ $ ->
           text: "" # "Calories"
           style:
             color: "#656a63"
-        plotLines: [ 
-          value: 1700
-          zIndex: 6
-          color: 'green',
-          dashStyle: 'shortdash',
-          width: 1,
-          label: {
-            text: 'Target Calories'
-            x: -92
-            y: 3
-          }
-        ]
       ]
       tooltip:
         pointFormat: "<span style=\"color:#656a63\">{series.name}</span>: <b>{point.y}</b><br/>"
@@ -77,5 +67,11 @@ $ ->
         color: "#743b9a"
         type: "spline"
         data: randomCaloriesNet
+      ,
+        name: "Target Calories"
+        color: "#FF0000"
+        data: targetCalories
+        type: "line"
+        
       ]
     )
