@@ -1,25 +1,26 @@
 $ ->
-  randomCaloriesConsumed = []
-  randomCaloriesBurned = []
-  randomCaloriesNet = []
-  targetCalories = []
-  xAxisLabels = []
+  sourceData = []
+  
   now = new Date(Date.now())    
+  
   for index in [0..30]
-    consumed = Math.floor(2000-(10*index)+(89*Math.random()))
-    burned = Math.floor(0-(6*index)-(22*Math.random()))
+    day = {}
+    
+    day.date = new Date()
+    day.date.setDate(now.getDate() - 31 + index)
+    day.xAxisLabel = "#{1+day.date.getMonth()}/#{day.date.getDate()}"
+    day.target = (2000 - (index * 10))
+    
     if Math.random() > 0.2
-      randomCaloriesConsumed.push consumed
-      randomCaloriesBurned.push burned
-      randomCaloriesNet.push consumed + burned
-    else
-      randomCaloriesConsumed.push null
-      randomCaloriesBurned.push null
-      randomCaloriesNet.push null
-    targetCalories.push (2000 - (index * 10))
-    d = new Date()
-    d.setDate(now.getDate() - 31 + index)
-    xAxisLabels.push "#{1+d.getMonth()}/#{d.getDate()}"
+      day.consumed = Math.floor(2000-(10*index)+(89*Math.random()))
+      day.burned = Math.floor(0-(6*index)-(22*Math.random()))
+      day.net = day.consumed + day.burned
+      if day.net > day.target
+        day.zone = "Over"
+      else
+        day.zone = "Under"
+    sourceData.push day
+  
   chart = undefined
   $(document).ready ->
     chart = new Highcharts.Chart(
@@ -33,7 +34,8 @@ $ ->
       xAxis: [
         labels:
           step: 3 # change this based on how many columns
-        categories: xAxisLabels
+        categories: _.map sourceData, (day) ->
+          day.xAxisLabel
       ]
       yAxis: [ 
         labels:
@@ -46,32 +48,46 @@ $ ->
           style:
             color: "#656a63"
       ]
-      tooltip:
-        pointFormat: "<span style=\"color:#656a63\">{series.name}</span>: <b>{point.y}</b><br/>"
       series: [
-        stacking: "normal"
         name: "Calories Consumed"
-        color: "#dcf3f9"
         type: "column"
-        data: randomCaloriesConsumed
-      ,
         stacking: "normal"
-        name: "Calories Burned"
-        color: "#a9e0f4"
-        type: "column"
-        data: randomCaloriesBurned
+        color: "#dcf3f9"
+        data: _.map sourceData, (day) ->
+          if day.consumed?
+            day.consumed
+          else
+            null
       ,
-        stacking: null
-        connectNulls: true
+        name: "Calories Burned"
+        type: "column"
+        stacking: "normal"
+        color: "#a9e0f4"
+        data: _.map sourceData, (day) ->
+          if day.burned?
+            day.burned
+          else
+            null
+      ,
         name: "Over/Under"
-        color: "#743b9a"
         type: "spline"
-        data: randomCaloriesNet
+        connectNulls: true
+        color: "#743b9a"
+        data: _.map sourceData, (day) ->
+          if day.net?
+            y: day.net
+            name: day.zone
+          else
+            null
+        tooltip:
+          pointFormat: ""
       ,
         name: "Target Calories"
+        type: "spline"
         color: "#FF0000"
-        data: targetCalories
-        type: "line"
-        
+        data: _.map sourceData, (day) ->
+          day.target
       ]
+      tooltip:
+        pointFormat: "<span style=\"color:#656a63\">{series.name}</span>: <b>{point.y}</b><br/>"
     )
