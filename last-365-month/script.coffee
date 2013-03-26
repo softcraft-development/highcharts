@@ -88,7 +88,7 @@ $ ->
           else
             null
         tooltip:
-          pointFormat: ""
+          pointFormat: "{point.category}"
       ,
         name: "Target Calories"
         type: "spline"
