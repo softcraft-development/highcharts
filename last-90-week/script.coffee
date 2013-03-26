@@ -7,7 +7,7 @@ $ ->
     day = {}
     
     day.date = new Date()
-    day.date.setDate(now.getDate() - 31 + index)
+    day.date.setDate(now.getDate() - 90 + index)
     day.xAxisLabel = "#{1+day.date.getMonth()}/#{day.date.getDate()}"
     day.target = (2000 - (index * 6))
     
