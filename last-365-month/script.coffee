@@ -3,17 +3,17 @@ $ ->
   
   now = new Date(Date.now())    
   
-  for index in [0...90] by 7
+  for index in [12..1]
     day = {}
     
-    day.date = new Date()
-    day.date.setDate(now.getDate() - 31 + index)
-    day.xAxisLabel = "#{1+day.date.getMonth()}/#{day.date.getDate()}"
-    day.target = (2000 - (index * 6))
+    day.date = new Date(Date.now())
+    day.date.setMonth(now.getMonth() - index)
+    day.xAxisLabel = $.datepicker.formatDate('M yy', day.date)
+    day.target = (2000 + (index * 12))
     
     if Math.random() > 0.2
-      day.consumed = Math.floor(2000-(6*index)+(200*Math.random()))
-      day.burned = Math.floor(0-(3*index)-(48*Math.random()))
+      day.consumed = Math.floor(2000-(180/index)+(400*Math.random()))
+      day.burned = Math.floor(0-(120/index)-(120*Math.random()))
       day.net = day.consumed + day.burned
       if day.net > day.target
         day.summary = "Over: " + (day.net - day.target)
@@ -32,7 +32,7 @@ $ ->
         renderTo: "container"
         zoomType: "xy"
       title:
-        text: "Last 90 Days (in weeks)"
+        text: "Last Year (in months)"
       subtitle:
         text: ""
       xAxis: [
