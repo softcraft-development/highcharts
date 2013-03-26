@@ -89,7 +89,7 @@ $ ->
             name: day.summary
             marker:
               fillColor: day.color
-              radius: 8
+              radius: 6
               symbol: day.symbol
           else
             null
