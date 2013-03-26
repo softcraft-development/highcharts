@@ -51,6 +51,12 @@ $ ->
           text: "" # "Calories"
           style:
             color: "#656a63"
+        tickPositioner: () ->
+          belowInterval = 100
+          aboveInterval = 1000
+          below = (number for number in [(Math.floor(this.dataMin / belowInterval) * belowInterval)...0] by belowInterval)
+          above = (number for number in [0..(Math.ceil(this.dataMax / aboveInterval) * aboveInterval)] by aboveInterval)
+          below.concat(above)
       ]
       series: [
         name: "Calories Consumed"
