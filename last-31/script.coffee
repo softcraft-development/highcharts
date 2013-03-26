@@ -16,11 +16,11 @@ $ ->
       day.burned = Math.floor(0-(7*index)-(24*Math.random()))
       day.net = day.consumed + day.burned
       if day.net > day.target
-        day.zone = "Over"
+        day.summary = "Over: " + (day.net - day.target)
         day.color = "#A61E09"
         day.symbol = "triangle"
       else
-        day.zone = "Under"
+        day.summary = "Under: " + (day.net - day.target)
         day.color = "#089934"
         day.symbol = "triangle-down"
     sourceData.push day
@@ -80,12 +80,11 @@ $ ->
         data: _.map sourceData, (day) ->
           if day.net?
             y: day.net
-            name: day.zone
+            name: day.summary
             marker:
               fillColor: day.color
               radius: 8
               symbol: day.symbol
-              lineColor: day.color
           else
             null
         tooltip:
@@ -101,6 +100,4 @@ $ ->
         data: _.map sourceData, (day) ->
           day.target
       ]
-      tooltip:
-        pointFormat: "<span style=\"color:#656a63\">{series.name}</span>: <b>{point.y}</b><br/>"
     )
