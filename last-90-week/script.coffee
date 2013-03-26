@@ -3,7 +3,7 @@ $ ->
   
   now = new Date(Date.now())    
   
-  for index in [0...30]
+  for index in [0...90] by 7
     day = {}
     
     day.date = new Date()
