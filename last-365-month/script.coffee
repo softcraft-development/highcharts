@@ -37,7 +37,7 @@ $ ->
         text: ""
       xAxis: [
         labels:
-          step: 1 # change this based on how many columns
+          step: 2 # change this based on how many columns
         categories: _.map sourceData, (day) ->
           day.xAxisLabel
       ]
