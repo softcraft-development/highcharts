@@ -1,4 +1,20 @@
 $ ->
+  SourceColors = 
+    Purple: "#6b3092"
+    LightPurple: "#e4dcee"
+    Blue: "#00cbe8"
+    LightBlue: "#e2f5fa"
+    Mint: "#eaf5cf"
+    
+  ColorScheme =
+    Consumed: SourceColors.LightPurple
+    Burned: SourceColors.Purple
+    Above: "#bc7579"
+    Below: "#58ab53"
+    Line: "#656a63"
+    OverUnder: SourceColors.Blue
+    Target: "#d8431f"
+
   sourceData = []
   
   now = new Date(Date.now())    
@@ -17,11 +33,11 @@ $ ->
       day.net = day.consumed + day.burned
       if day.net > day.target
         day.summary = "Over: " + (day.net - day.target)
-        day.color = "#A61E09"
+        day.differenceColor = ColorScheme.Above
         day.symbol = "triangle"
       else
         day.summary = "Under: " + (day.net - day.target)
-        day.color = "#089934"
+        day.differenceColor = ColorScheme.Below
         day.symbol = "triangle-down"
     sourceData.push day
   
@@ -46,11 +62,11 @@ $ ->
           formatter: ->
             @value + " calories"
           style:
-            color: "#656a63"
+            color: ColorScheme.Line
         title:
           text: "" # "Calories"
           style:
-            color: "#656a63"
+            color: ColorScheme.Line
       ]
       series: [
         name: "Calories Consumed"

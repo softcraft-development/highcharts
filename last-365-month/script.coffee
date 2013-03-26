@@ -1,4 +1,20 @@
 $ ->
+  SourceColors = 
+    Purple: "#6b3092"
+    LightPurple: "#e4dcee"
+    Blue: "#00cbe8"
+    LightBlue: "#e2f5fa"
+    Mint: "#eaf5cf"
+    
+  ColorScheme =
+    Consumed: SourceColors.LightPurple
+    Burned: SourceColors.Purple
+    Above: "#bc7579"
+    Below: "#58ab53"
+    Line: "#656a63"
+    OverUnder: SourceColors.Blue
+    Target: "#d8431f"
+  
   sourceData = []
   
   now = new Date(Date.now())    
@@ -17,11 +33,11 @@ $ ->
       day.net = day.consumed + day.burned
       if day.net > day.target
         day.summary = "Over: " + (day.net - day.target)
-        day.color = "#A61E09"
+        day.differenceColor = ColorScheme.Above
         day.symbol = "triangle"
       else
         day.summary = "Under: " + (day.net - day.target)
-        day.color = "#089934"
+        day.differenceColor = ColorScheme.Below
         day.symbol = "triangle-down"
     sourceData.push day
   
@@ -46,17 +62,17 @@ $ ->
           formatter: ->
             @value + " calories"
           style:
-            color: "#656a63"
+            color: ColorScheme.Line
         title:
           text: "" # "Calories"
           style:
-            color: "#656a63"
+            color: ColorScheme.Line
       ]
       series: [
         name: "Calories Consumed"
         type: "column"
         stacking: "normal"
-        color: "#9ddbf4"
+        color: ColorScheme.Consumed
         data: _.map sourceData, (day) ->
           if day.consumed?
             day.consumed
@@ -66,7 +82,7 @@ $ ->
         name: "Calories Burned"
         type: "column"
         stacking: "normal"
-        color: "#1fbae3"
+        color: ColorScheme.Burned
         data: _.map sourceData, (day) ->
           if day.burned?
             day.burned
@@ -76,13 +92,13 @@ $ ->
         name: "Over/Under"
         type: "spline"
         connectNulls: true
-        color: "#731491"
+        color: ColorScheme.OverUnder
         data: _.map sourceData, (day) ->
           if day.net?
             y: day.net
             name: day.summary
             marker:
-              fillColor: day.color
+              fillColor: day.differenceColor
               radius: 8
               symbol: day.symbol
           else
@@ -92,9 +108,9 @@ $ ->
       ,
         name: "Target Calories"
         type: "spline"
-        color: "#731491"
+        color: ColorScheme.Target
         dashStyle: "Dash"
-        lineWidth: 1
+        lineWidth: 2
         marker: 
           enabled: false
         data: _.map sourceData, (day) ->
