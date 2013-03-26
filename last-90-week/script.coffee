@@ -9,11 +9,11 @@ $ ->
     day.date = new Date()
     day.date.setDate(now.getDate() - 31 + index)
     day.xAxisLabel = "#{1+day.date.getMonth()}/#{day.date.getDate()}"
-    day.target = (2000 - (index * 10))
+    day.target = (2000 - (index * 6))
     
     if Math.random() > 0.2
-      day.consumed = Math.floor(2000-(11*index)+(108*Math.random()))
-      day.burned = Math.floor(0-(7*index)-(24*Math.random()))
+      day.consumed = Math.floor(2000-(6*index)+(200*Math.random()))
+      day.burned = Math.floor(0-(3*index)-(48*Math.random()))
       day.net = day.consumed + day.burned
       if day.net > day.target
         day.summary = "Over: " + (day.net - day.target)
