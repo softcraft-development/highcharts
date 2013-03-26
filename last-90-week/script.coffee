@@ -32,7 +32,7 @@ $ ->
         renderTo: "container"
         zoomType: "xy"
       title:
-        text: "Last 31 Days (with gaps)"
+        text: "Last 90 Days (in weeks)"
       subtitle:
         text: ""
       xAxis: [
