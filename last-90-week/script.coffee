@@ -14,6 +14,8 @@ $ ->
     Line: "#656a63"
     OverUnder: SourceColors.Blue
     Target: "#d8431f"
+    
+  xAxisFormat = "m/d"
 
   sourceData = []
   
@@ -24,7 +26,7 @@ $ ->
     
     day.date = new Date()
     day.date.setDate(now.getDate() - 90 + index)
-    day.xAxisLabel = "#{1+day.date.getMonth()}/#{day.date.getDate()}"
+    day.xAxisLabel = $.datepicker.formatDate(xAxisFormat, day.date)
     day.target = (2000 - (index * 6))
     
     if Math.random() > 0.2
@@ -32,11 +34,11 @@ $ ->
       day.burned = Math.floor(0-(3*index)-(48*Math.random()))
       day.net = day.consumed + day.burned
       if day.net > day.target
-        day.summary = "Over: " + (day.net - day.target)
+        day.summary = "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Over: " + (day.net - day.target)
         day.differenceColor = ColorScheme.Above
         day.symbol = "triangle"
       else
-        day.summary = "Under: " + (day.net - day.target)
+        day.summary = "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Under: " + (day.net - day.target)
         day.differenceColor = ColorScheme.Below
         day.symbol = "triangle-down"
     sourceData.push day
@@ -72,48 +74,53 @@ $ ->
         name: "Calories Consumed"
         type: "column"
         stacking: "normal"
-        color: "#9ddbf4"
+        color: ColorScheme.Consumed
         data: _.map sourceData, (day) ->
           if day.consumed?
-            day.consumed
+            y: day.consumed
+            name: "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Calories Consumed: #{day.consumed}"
           else
             null
       ,
         name: "Calories Burned"
         type: "column"
         stacking: "normal"
-        color: "#1fbae3"
+        color: ColorScheme.Burned
         data: _.map sourceData, (day) ->
           if day.burned?
-            day.burned
+            y: day.burned
+            name: "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Calories Burned: #{day.burned * -1}"
           else
             null
       ,
         name: "Over/Under"
         type: "spline"
         connectNulls: true
-        color: "#731491"
+        color: ColorScheme.OverUnder
+        lineWidth: 3
         data: _.map sourceData, (day) ->
           if day.net?
             y: day.net
             name: day.summary
             marker:
-              fillColor: day.color
+              fillColor: day.differenceColor
               radius: 8
               symbol: day.symbol
           else
             null
-        tooltip:
-          pointFormat: "{point.category}"
       ,
         name: "Target Calories"
         type: "spline"
-        color: "#731491"
+        color: ColorScheme.Target
         dashStyle: "Dash"
-        lineWidth: 1
+        lineWidth: 2
         marker: 
           enabled: false
         data: _.map sourceData, (day) ->
-          day.target
+          y: day.target
+          name: "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Target Calories: #{day.target}"
       ]
+      tooltip: 
+        formatter: () ->
+          this.point.name
     )

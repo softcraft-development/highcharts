@@ -14,6 +14,8 @@ $ ->
     Line: "#656a63"
     OverUnder: SourceColors.Blue
     Target: "#d8431f"
+    
+  xAxisFormat = "M yy"
   
   sourceData = []
   
@@ -24,7 +26,7 @@ $ ->
     
     day.date = new Date(Date.now())
     day.date.setMonth(now.getMonth() - index)
-    day.xAxisLabel = $.datepicker.formatDate('M yy', day.date)
+    day.xAxisLabel = $.datepicker.formatDate(xAxisFormat, day.date)
     day.target = (2000 + (index * 12))
     
     if Math.random() > 0.2
@@ -32,11 +34,11 @@ $ ->
       day.burned = Math.floor(0-(120/index)-(120*Math.random()))
       day.net = day.consumed + day.burned
       if day.net > day.target
-        day.summary = "Over: " + (day.net - day.target)
+        day.summary = "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Over: " + (day.net - day.target)
         day.differenceColor = ColorScheme.Above
         day.symbol = "triangle"
       else
-        day.summary = "Under: " + (day.net - day.target)
+        day.summary = "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Under: " + (day.net - day.target)
         day.differenceColor = ColorScheme.Below
         day.symbol = "triangle-down"
     sourceData.push day
@@ -75,7 +77,8 @@ $ ->
         color: ColorScheme.Consumed
         data: _.map sourceData, (day) ->
           if day.consumed?
-            day.consumed
+            y: day.consumed
+            name: "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Calories Consumed: #{day.consumed}"
           else
             null
       ,
@@ -85,7 +88,8 @@ $ ->
         color: ColorScheme.Burned
         data: _.map sourceData, (day) ->
           if day.burned?
-            day.burned
+            y: day.burned
+            name: "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Calories Burned: #{day.burned * -1}"
           else
             null
       ,
@@ -93,6 +97,7 @@ $ ->
         type: "spline"
         connectNulls: true
         color: ColorScheme.OverUnder
+        lineWidth: 3
         data: _.map sourceData, (day) ->
           if day.net?
             y: day.net
@@ -103,8 +108,6 @@ $ ->
               symbol: day.symbol
           else
             null
-        tooltip:
-          pointFormat: "{point.category}"
       ,
         name: "Target Calories"
         type: "spline"
@@ -114,6 +117,10 @@ $ ->
         marker: 
           enabled: false
         data: _.map sourceData, (day) ->
-          day.target
+          y: day.target
+          name: "#{$.datepicker.formatDate(xAxisFormat, day.date)}<br/>Target Calories: #{day.target}"
       ]
+      tooltip: 
+        formatter: () ->
+          this.point.name
     )
