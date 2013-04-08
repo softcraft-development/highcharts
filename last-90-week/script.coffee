@@ -46,6 +46,8 @@ $ ->
   
   $(document).ready ->
     new Highcharts.Chart(
+      exporting:
+        enabled: false
       chart:
         renderTo: "container"
         zoomType: "xy"
