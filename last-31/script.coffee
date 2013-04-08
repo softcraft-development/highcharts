@@ -103,9 +103,7 @@ $ ->
             y: day.net
             name: day.summary
             marker:
-              fillColor: day.differenceColor
-              radius: 6
-              symbol: day.symbol
+              enabled: false
           else
             null
       ,
